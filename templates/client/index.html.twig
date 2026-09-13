@@ -1,0 +1,72 @@
+{% extends '@Mailbox/client/layout.html.twig' %}
+
+{% block mailbox_title %}{{ ('@mailbox.box.' ~ box)|trans }}{% endblock %}
+
+{% block mailbox_body %}
+    {% set me = app.user %}
+    <form method="post" action="{{ path('mailbox_batch', {action: 'archive'}) }}" class="mailbox-list-form" data-mailbox-batch>
+        <input type="hidden" name="_token" value="{{ csrf_token('mailbox_batch') }}">
+        <input type="hidden" name="box" value="{{ box }}">
+
+        <div class="mailbox-list-head">
+            <h2>{{ ('@mailbox.box.' ~ box)|trans }} <small>{{ '@mailbox.list.count'|trans({'%count%': conversations.totalCount|default(conversations|length)}) }}</small></h2>
+            <div class="mailbox-list-actions">
+                {% if box != 'archive' %}
+                <button class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" formaction="{{ path('mailbox_batch', {action: 'archive'}) }}"><i class="fa-solid fa-box-archive"></i> {{ '@mailbox.action.archive'|trans }}</button>
+                {% endif %}
+                <button class="mailbox-btn mailbox-btn-danger mailbox-btn-sm" formaction="{{ path('mailbox_batch', {action: 'delete'}) }}" data-confirm="{{ '@mailbox.action.delete_confirm'|trans }}"><i class="fa-solid fa-trash"></i> {{ '@mailbox.action.delete'|trans }}</button>
+            </div>
+        </div>
+
+        {% if conversations|length == 0 %}
+            <p class="mailbox-empty">{{ ('@mailbox.list.empty_' ~ box)|trans }}</p>
+        {% else %}
+        <table class="mailbox-list">
+            <thead>
+                <tr>
+                    <th class="col-check"><input type="checkbox" data-mailbox-check-all aria-label="{{ '@mailbox.list.select_all'|trans }}"></th>
+                    <th class="col-state"></th>
+                    <th class="col-who">{{ (box == 'sent' ? '@mailbox.list.to' : '@mailbox.list.from')|trans }}</th>
+                    <th class="col-subject">{{ '@mailbox.list.subject'|trans }}</th>
+                    <th class="col-date">{{ '@mailbox.list.date'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for conversation in conversations %}
+                {% set unread_row = conversation.isUnreadFor(me) %}
+                {% set mine = conversation.getParticipant(me) %}
+                {% set others = conversation.getOthers(me) %}
+                <tr class="mailbox-row{{ unread_row ? ' is-unread' }}{{ mine and mine.starred ? ' is-starred' }}">
+                    <td class="col-check"><input type="checkbox" name="ids[]" value="{{ conversation.id }}" aria-label="{{ conversation.subject }}"></td>
+                    <td class="col-state">
+                        {% if unread_row %}<i class="fa-solid fa-envelope" title="{{ '@mailbox.list.unread'|trans }}"></i>{% else %}<i class="fa-regular fa-envelope-open" title="{{ '@mailbox.list.read'|trans }}"></i>{% endif %}
+                        {% if mine and mine.starred %}<i class="fa-solid fa-star mailbox-star" title="{{ '@mailbox.action.starred'|trans }}"></i>{% endif %}
+                    </td>
+                    <td class="col-who">
+                        <div class="mailbox-who">
+                            {% include '@Mailbox/client/_avatar.html.twig' with {user: others|first ?? null, size: 'sm'} %}
+                            <span>
+                                {% for other in others %}{% if not loop.first %}, {% endif %}{% include '@Mailbox/client/_member.html.twig' with {user: other} %}{% else %}<span class="mailbox-member-gone">{{ '@mailbox.member.nobody'|trans }}</span>{% endfor %}
+                            </span>
+                        </div>
+                    </td>
+                    <td class="col-subject">
+                        <a href="{{ path('mailbox_show', {id: conversation.id}) }}">{{ conversation.subject }}</a>
+                        <span class="mailbox-count" title="{{ '@mailbox.list.messages'|trans({'%count%': conversation.messageCount}) }}"><i class="fa-regular fa-comment"></i> {{ conversation.messageCount }}</span>
+                        {% if conversation.lastMessage %}<div class="mailbox-preview">{{ conversation.lastMessage.content|u.truncate(90, '…') }}</div>{% endif %}
+                    </td>
+                    <td class="col-date"><time datetime="{{ conversation.lastMessageAt|date('c') }}" title="{{ conversation.lastMessageAt|datetime('d MMMM yyyy, HH:mm') }}">{{ conversation.lastMessageAt|datetime('d MMM yyyy') }}</time></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </form>
+
+    {{ paginator(conversations, 'mailbox_index', {box: box}) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/mailbox/js/mailbox.js') }}" defer></script>
+{% endblock %}

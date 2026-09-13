@@ -1,0 +1,65 @@
+{% extends '@Mailbox/client/layout.html.twig' %}
+
+{% set box = me.archived ? 'archive' : 'inbox' %}
+{% block mailbox_title %}{{ conversation.subject }}{% endblock %}
+
+{% block mailbox_body %}
+    {% set user = app.user %}
+    {% set others = conversation.getOthers(user) %}
+
+    <article class="mailbox-thread">
+        <header class="mailbox-thread-head">
+            <div class="mailbox-thread-text">
+                <h2>{% if me.starred %}<i class="fa-solid fa-star mailbox-star"></i> {% endif %}{{ conversation.subject }}</h2>
+                <p class="mailbox-thread-with">
+                    {{ '@mailbox.show.with'|trans }}
+                    {% for other in others %}{% if not loop.first %}, {% endif %}{% include '@Mailbox/client/_member.html.twig' with {user: other} %}{% else %}<span class="mailbox-member-gone">{{ '@mailbox.member.nobody'|trans }}</span>{% endfor %}
+                    · {{ '@mailbox.list.messages'|trans({'%count%': conversation.messageCount}) }}
+                </p>
+            </div>
+            <form method="post" class="mailbox-thread-actions" data-mailbox-actions>
+                <input type="hidden" name="_token" value="{{ csrf_token('mailbox_' ~ conversation.id) }}">
+                <button class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: me.starred ? 'unstar' : 'star'}) }}"><i class="fa-{{ me.starred ? 'solid' : 'regular' }} fa-star"></i> {{ (me.starred ? '@mailbox.action.unstar' : '@mailbox.action.star')|trans }}</button>
+                <button class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: me.archived ? 'unarchive' : 'archive'}) }}"><i class="fa-solid fa-box-archive"></i> {{ (me.archived ? '@mailbox.action.unarchive' : '@mailbox.action.archive')|trans }}</button>
+                <button class="mailbox-btn mailbox-btn-danger mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: 'delete'}) }}" data-confirm="{{ '@mailbox.action.delete_confirm'|trans }}"><i class="fa-solid fa-trash"></i> {{ '@mailbox.action.delete'|trans }}</button>
+            </form>
+        </header>
+
+        <ol class="mailbox-messages">
+            {% for message in conversation.messages %}
+                {% set mine = message.sender == user %}
+                <li class="mailbox-message{{ mine ? ' is-mine' }}" id="message-{{ message.id }}">
+                    <div class="mailbox-message-author">
+                        {% include '@Mailbox/client/_avatar.html.twig' with {user: message.sender, size: 'md'} %}
+                    </div>
+                    <div class="mailbox-message-bubble">
+                        <header>
+                            {% include '@Mailbox/client/_member.html.twig' with {user: message.sender} %}
+                            <time datetime="{{ message.createdAt|date('c') }}">{{ message.createdAt|datetime('d MMMM yyyy, HH:mm') }}</time>
+                        </header>
+                        <div class="mailbox-message-text">{{ message.content|mailbox_text }}</div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ol>
+
+        {% if others|length %}
+        <section class="mailbox-reply" id="reply">
+            <h3><i class="fa-solid fa-reply"></i> {{ '@mailbox.reply.title'|trans }}</h3>
+            {{ form_start(form, {attr: {class: 'mailbox-form'}}) }}
+                {{ form_row(form.content) }}
+                <div class="mailbox-form-actions">
+                    <button type="submit" class="mailbox-btn mailbox-btn-primary"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.reply.send'|trans }}</button>
+                </div>
+            {{ form_end(form) }}
+        </section>
+        {% else %}
+            <p class="mailbox-empty">{{ '@mailbox.show.nobody_left'|trans }}</p>
+        {% endif %}
+    </article>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/mailbox/js/mailbox.js') }}" defer></script>
+{% endblock %}

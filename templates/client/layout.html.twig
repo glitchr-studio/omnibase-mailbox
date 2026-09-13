@@ -1,0 +1,61 @@
+{#
+ # The mailbox chrome inside the site's layout: a banner (overridable), the
+ # folder tabs, then the page. The aside carries the "write" button and the
+ # box's quota.
+ #}
+{% extends 'layout1.html.twig' %}
+
+{% block title %}{{ block('mailbox_title') is defined ? block('mailbox_title') : '@mailbox.title'|trans }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/mailbox/css/mailbox.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="mailbox">
+    {% include '@Mailbox/client/_banner.html.twig' ignore missing %}
+
+    <nav class="mailbox-tabs" aria-label="{{ '@mailbox.title'|trans }}">
+        {% set current = box|default(null) %}
+        <a class="mailbox-tab{{ current == 'inbox' ? ' is-active' }}" href="{{ path('mailbox_index') }}">
+            <i class="fa-solid fa-inbox"></i> {{ '@mailbox.box.inbox'|trans }}
+            {% if unread|default(0) > 0 %}<span class="mailbox-badge">{{ unread }}</span>{% endif %}
+        </a>
+        <a class="mailbox-tab{{ current == 'sent' ? ' is-active' }}" href="{{ path('mailbox_index', {box: 'sent'}) }}"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.box.sent'|trans }}</a>
+        <a class="mailbox-tab{{ current == 'archive' ? ' is-active' }}" href="{{ path('mailbox_index', {box: 'archive'}) }}"><i class="fa-solid fa-box-archive"></i> {{ '@mailbox.box.archive'|trans }}</a>
+        <a class="mailbox-tab mailbox-tab-new{{ current == 'compose' ? ' is-active' }}" href="{{ path('mailbox_compose') }}"><i class="fa-solid fa-pen"></i> {{ '@mailbox.compose.title'|trans }}</a>
+    </nav>
+
+    {% include 'flashbag.html.twig' ignore missing %}
+
+    {% block mailbox_body %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block aside %}
+<div class="mailbox-aside">
+    {% block mailbox_aside %}
+    <div class="mailbox-box">
+        <div class="mailbox-box-title"><i class="fa-solid fa-feather"></i> {{ '@mailbox.aside.write'|trans }}</div>
+        <div class="mailbox-box-body">
+            <a class="mailbox-btn mailbox-btn-primary" href="{{ path('mailbox_compose') }}"><i class="fa-solid fa-pen"></i> {{ '@mailbox.compose.title'|trans }}</a>
+            {% if count is defined and limit is defined and limit > 0 %}
+                <p class="mailbox-quota">{{ '@mailbox.aside.quota'|trans({'%count%': count, '%limit%': limit}) }}</p>
+                <div class="mailbox-meter" role="meter" aria-valuemin="0" aria-valuemax="{{ limit }}" aria-valuenow="{{ count }}"><span style="width: {{ (100 * count / limit)|round }}%"></span></div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mailbox-box">
+        <div class="mailbox-box-title"><i class="fa-solid fa-circle-question"></i> {{ '@mailbox.aside.help'|trans }}</div>
+        <div class="mailbox-box-body">
+            <ul>
+                <li>{{ '@mailbox.aside.help_private'|trans }}</li>
+                <li>{{ '@mailbox.aside.help_reply'|trans }}</li>
+                <li>{{ '@mailbox.aside.help_archive'|trans }}</li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %}
+</div>
+{% endblock %}

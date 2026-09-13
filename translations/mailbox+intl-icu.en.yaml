@@ -1,0 +1,91 @@
+title: "Messages"
+
+box:
+  inbox: "Inbox"
+  sent: "Sent"
+  archive: "Archive"
+
+list:
+  count: "{count, plural, =0 {no conversation} one {# conversation} other {# conversations}}"
+  from: "From"
+  to: "To"
+  subject: "Subject"
+  date: "Date"
+  unread: "Unread"
+  read: "Read"
+  messages: "{count, plural, one {# message} other {# messages}}"
+  select_all: "Select all"
+  empty_inbox: "Your inbox is empty."
+  empty_sent: "You have not sent anything yet."
+  empty_archive: "Nothing archived."
+
+show:
+  with: "with"
+  nobody_left: "Nobody is left in this conversation, so it takes no reply."
+
+compose:
+  title: "New message"
+  hint: "Write to one or more members (separate usernames with commas). One message every two minutes, and a full box receives nothing."
+  send: "Send"
+
+reply:
+  title: "Reply"
+  send: "Send"
+
+action:
+  archive: "Archive"
+  unarchive: "Unarchive"
+  star: "Star"
+  unstar: "Unstar"
+  starred: "Starred"
+  delete: "Delete"
+  delete_confirm: "Delete? The conversation leaves your box, not the others'."
+
+aside:
+  write: "Write"
+  quota: "Mails: %count%/%limit%"
+  help: "Good to know"
+  help_private: "A message is private: only its participants read it."
+  help_reply: "Reply inside the conversation, it stays together."
+  help_archive: "Archive what you want to keep without cluttering your box."
+
+member:
+  deleted: "Vanished member"
+  nobody: "nobody"
+
+form:
+  to: "To:"
+  to_help: "The member's exact username, as shown in the directory."
+  to_placeholder: "Who are you writing to?"
+  subject: "Subject:"
+  subject_placeholder: "Title of your message"
+  message: "Message:"
+  message_placeholder: "Your message…"
+  reply: "Your reply"
+  reply_placeholder: "Your reply…"
+  cancel: "Cancel"
+
+message:
+  blank: "You cannot send an empty message."
+
+error:
+  empty: "You cannot send an empty message or subject."
+  subject_too_long: "The subject may hold at most %max% characters."
+  content_too_long: "Your message exceeds %max% characters."
+  no_recipient: "Who are you writing to? Give at least one username."
+  too_many_recipients: "No more than %max% recipients at once."
+  unknown_recipient: "No such member: \"%username%\"."
+  self: "Writing to yourself? Get a notebook!"
+  inbox_full: "%username%'s inbox is full."
+  flood: "Wait two minutes between two messages (%seconds% s left)."
+  not_yours: "This conversation is not yours."
+  nobody_left: "Nobody left to answer in this conversation."
+
+flash:
+  sent: "Message sent to %username%."
+  replied: "Reply sent."
+  archived: "Conversation archived."
+  unarchived: "Conversation back in your inbox."
+  deleted: "Conversation deleted."
+  batch_archived: "{count, plural, =0 {Nothing to archive.} one {# conversation archived.} other {# conversations archived.}}"
+  batch_deleted: "{count, plural, =0 {Nothing to delete.} one {# conversation deleted.} other {# conversations deleted.}}"

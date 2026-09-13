@@ -1,0 +1,11 @@
+{# A member's picture; override in the application (see the forum bundle's _avatar for the same idea). #}
+{% set size = size|default('sm') %}
+<span class="mailbox-avatar mailbox-avatar-{{ size }}">
+    {% if user is null %}
+        <i class="fa-solid fa-user-slash" aria-hidden="true"></i>
+    {% elseif user.getFormattedAvatar is defined %}
+        {{ user.getFormattedAvatar()|raw }}
+    {% else %}
+        <span>{{ (user.username|default('?'))|first|upper }}</span>
+    {% endif %}
+</span>

@@ -1,0 +1,21 @@
+{% extends '@Mailbox/client/layout.html.twig' %}
+
+{% set box = 'compose' %}
+{% block mailbox_title %}{{ '@mailbox.compose.title'|trans }}{% endblock %}
+
+{% block mailbox_body %}
+    <section class="mailbox-compose">
+        <h2><i class="fa-solid fa-pen"></i> {{ '@mailbox.compose.title'|trans }}</h2>
+        <p class="mailbox-compose-hint">{{ '@mailbox.compose.hint'|trans }}</p>
+
+        {{ form_start(form, {attr: {class: 'mailbox-form'}}) }}
+            {{ form_row(form.recipients) }}
+            {{ form_row(form.subject) }}
+            {{ form_row(form.content) }}
+            <div class="mailbox-form-actions">
+                <button type="submit" class="mailbox-btn mailbox-btn-primary"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.compose.send'|trans }}</button>
+                <a class="mailbox-btn mailbox-btn-ghost" href="{{ path('mailbox_index') }}">{{ '@mailbox.form.cancel'|trans }}</a>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

@@ -1,0 +1,91 @@
+title: "Messagerie"
+
+box:
+  inbox: "Boîte de réception"
+  sent: "Envoyés"
+  archive: "Archives"
+
+list:
+  count: "{count, plural, =0 {aucune conversation} one {# conversation} other {# conversations}}"
+  from: "De"
+  to: "À"
+  subject: "Sujet"
+  date: "Date"
+  unread: "Non lu"
+  read: "Lu"
+  messages: "{count, plural, one {# message} other {# messages}}"
+  select_all: "Tout sélectionner"
+  empty_inbox: "Tu n'as aucun message dans ta boîte de réception."
+  empty_sent: "Tu n'as encore rien envoyé."
+  empty_archive: "Rien d'archivé."
+
+show:
+  with: "avec"
+  nobody_left: "Plus personne dans cette conversation : on ne peut plus y répondre."
+
+compose:
+  title: "Nouveau message"
+  hint: "Écris à un ou plusieurs membres (sépare les pseudos par des virgules). Un message par deux minutes, et une boîte pleine ne reçoit plus rien."
+  send: "Envoyer"
+
+reply:
+  title: "Répondre"
+  send: "Envoyer"
+
+action:
+  archive: "Archiver"
+  unarchive: "Désarchiver"
+  star: "Marquer"
+  unstar: "Démarquer"
+  starred: "Marqué"
+  delete: "Supprimer"
+  delete_confirm: "Supprimer ? La conversation disparaît de ta boîte, pas de celle des autres."
+
+aside:
+  write: "Écrire"
+  quota: "Nombre de mails : %count%/%limit%"
+  help: "Bon à savoir"
+  help_private: "Un message est privé : seuls les participants le lisent."
+  help_reply: "Réponds dans la conversation, elle reste groupée."
+  help_archive: "Archive ce que tu veux garder sans encombrer ta boîte."
+
+member:
+  deleted: "Membre disparu"
+  nobody: "personne"
+
+form:
+  to: "À :"
+  to_help: "Le pseudo exact du tiz, tel qu'il apparaît dans l'annuaire."
+  to_placeholder: "Nom du tiz à qui tu veux envoyer"
+  subject: "Sujet :"
+  subject_placeholder: "Titre de ton message"
+  message: "Message :"
+  message_placeholder: "Ton message…"
+  reply: "Ta réponse"
+  reply_placeholder: "Ta réponse…"
+  cancel: "Annuler"
+
+message:
+  blank: "Tu ne peux pas envoyer de message vide."
+
+error:
+  empty: "Tu ne peux pas envoyer de message/sujet vide."
+  subject_too_long: "Ton sujet doit contenir au maximum %max% caractères."
+  content_too_long: "Ton message dépasse %max% caractères."
+  no_recipient: "À qui écris-tu ? Indique au moins un pseudo."
+  too_many_recipients: "Pas plus de %max% destinataires à la fois."
+  unknown_recipient: "Cette personne n'existe pas : « %username% »."
+  self: "T'écrire à toi-même ? Prends un carnet !"
+  inbox_full: "La boîte de réception de %username% est pleine."
+  flood: "Tu dois attendre 2 minutes entre chaque envoi de message (encore %seconds% s)."
+  not_yours: "Cette conversation n'est pas la tienne."
+  nobody_left: "Plus personne à qui répondre dans cette conversation."
+
+flash:
+  sent: "Message bien envoyé à %username%."
+  replied: "Réponse envoyée."
+  archived: "Conversation archivée."
+  unarchived: "Conversation remise dans ta boîte."
+  deleted: "Conversation supprimée."
+  batch_archived: "{count, plural, =0 {Rien à archiver.} one {# conversation archivée.} other {# conversations archivées.}}"
+  batch_deleted: "{count, plural, =0 {Rien à supprimer.} one {# conversation supprimée.} other {# conversations supprimées.}}"
