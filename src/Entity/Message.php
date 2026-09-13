@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** One message of a conversation. Plain text; line breaks are kept, nothing else is interpreted. */
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
 #[ORM\Table(name: 'mailbox_message')]
-#[ORM\Index(columns: ['created_at'], name: 'mailbox_message_created_idx')]
+#[ORM\Index(columns: ['createdAt'], name: 'mailbox_message_created_idx')]
 class Message
 {
     #[ORM\Id]

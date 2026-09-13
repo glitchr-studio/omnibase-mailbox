@@ -20,14 +20,18 @@ class ConversationRepository extends ServiceEntityRepository
     public const BOX_ARCHIVE = 'archive';
     public const BOX_SENT = 'sent';
 
-    /** A member's box: their participation row, not deleted, archived or not. */
+    /**
+     * A member's box: their participation row, not deleted, archived or not.
+     *
+     * The join on the member's own participation is for filtering only:
+     * fetch-joining the collections here would break the paginator's count
+     * query (it groups by the root id), and a page of twenty conversations
+     * loads its participants lazily at no visible cost.
+     */
     private function createBoxQueryBuilder(User $user, string $box): QueryBuilder
     {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.participants', 'me', 'WITH', 'me.user = :user')
-            ->addSelect('me')
-            ->leftJoin('c.participants', 'p')->addSelect('p')
-            ->leftJoin('p.user', 'pu')->addSelect('pu')
             ->leftJoin('c.lastSender', 'ls')->addSelect('ls')
             ->andWhere('me.deletedAt IS NULL')
             ->setParameter('user', $user)

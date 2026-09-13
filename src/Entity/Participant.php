@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
 #[ORM\Table(name: 'mailbox_participant')]
 #[ORM\UniqueConstraint(name: 'mailbox_participant_unique', columns: ['conversation_id', 'user_id'])]
-#[ORM\Index(columns: ['user_id', 'deleted_at', 'archived_at'], name: 'mailbox_participant_box_idx')]
+#[ORM\Index(columns: ['user_id', 'deletedAt', 'archivedAt'], name: 'mailbox_participant_box_idx')]
 class Participant
 {
     #[ORM\Id]

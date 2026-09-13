@@ -44,7 +44,7 @@
                     </td>
                     <td class="col-who">
                         <div class="mailbox-who">
-                            {% include '@Mailbox/client/_avatar.html.twig' with {user: others|first ?? null, size: 'sm'} %}
+                            {% include '@Mailbox/client/_avatar.html.twig' with {user: others|length ? others|first : null, size: 'sm'} %}
                             <span>
                                 {% for other in others %}{% if not loop.first %}, {% endif %}{% include '@Mailbox/client/_member.html.twig' with {user: other} %}{% else %}<span class="mailbox-member-gone">{{ '@mailbox.member.nobody'|trans }}</span>{% endfor %}
                             </span>
@@ -53,7 +53,7 @@
                     <td class="col-subject">
                         <a href="{{ path('mailbox_show', {id: conversation.id}) }}">{{ conversation.subject }}</a>
                         <span class="mailbox-count" title="{{ '@mailbox.list.messages'|trans({'%count%': conversation.messageCount}) }}"><i class="fa-regular fa-comment"></i> {{ conversation.messageCount }}</span>
-                        {% if conversation.lastMessage %}<div class="mailbox-preview">{{ conversation.lastMessage.content|u.truncate(90, '…') }}</div>{% endif %}
+                        {% if conversation.lastMessage %}<div class="mailbox-preview">{{ conversation.lastMessage.content|length > 90 ? conversation.lastMessage.content|slice(0, 90)|trim ~ '…' : conversation.lastMessage.content }}</div>{% endif %}
                     </td>
                     <td class="col-date"><time datetime="{{ conversation.lastMessageAt|date('c') }}" title="{{ conversation.lastMessageAt|datetime('d MMMM yyyy, HH:mm') }}">{{ conversation.lastMessageAt|datetime('d MMM yyyy') }}</time></td>
                 </tr>

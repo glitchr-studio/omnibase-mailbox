@@ -43,7 +43,7 @@ action:
 
 aside:
   write: "Write"
-  quota: "Mails: %count%/%limit%"
+  quota: "Mails: {count}/{limit}"
   help: "Good to know"
   help_private: "A message is private: only its participants read it."
   help_reply: "Reply inside the conversation, it stays together."
@@ -70,19 +70,19 @@ message:
 
 error:
   empty: "You cannot send an empty message or subject."
-  subject_too_long: "The subject may hold at most %max% characters."
-  content_too_long: "Your message exceeds %max% characters."
+  subject_too_long: "The subject may hold at most {max} characters."
+  content_too_long: "Your message exceeds {max} characters."
   no_recipient: "Who are you writing to? Give at least one username."
-  too_many_recipients: "No more than %max% recipients at once."
-  unknown_recipient: "No such member: \"%username%\"."
+  too_many_recipients: "No more than {max} recipients at once."
+  unknown_recipient: "No such member: \"{username}\"."
   self: "Writing to yourself? Get a notebook!"
-  inbox_full: "%username%'s inbox is full."
-  flood: "Wait two minutes between two messages (%seconds% s left)."
+  inbox_full: "{username}'s inbox is full."
+  flood: "Wait two minutes between two messages ({seconds} s left)."
   not_yours: "This conversation is not yours."
   nobody_left: "Nobody left to answer in this conversation."
 
 flash:
-  sent: "Message sent to %username%."
+  sent: "Message sent to {username}."
   replied: "Reply sent."
   archived: "Conversation archived."
   unarchived: "Conversation back in your inbox."

@@ -43,7 +43,7 @@ action:
 
 aside:
   write: "Écrire"
-  quota: "Nombre de mails : %count%/%limit%"
+  quota: "Nombre de mails : {count}/{limit}"
   help: "Bon à savoir"
   help_private: "Un message est privé : seuls les participants le lisent."
   help_reply: "Réponds dans la conversation, elle reste groupée."
@@ -70,19 +70,19 @@ message:
 
 error:
   empty: "Tu ne peux pas envoyer de message/sujet vide."
-  subject_too_long: "Ton sujet doit contenir au maximum %max% caractères."
-  content_too_long: "Ton message dépasse %max% caractères."
+  subject_too_long: "Ton sujet doit contenir au maximum {max} caractères."
+  content_too_long: "Ton message dépasse {max} caractères."
   no_recipient: "À qui écris-tu ? Indique au moins un pseudo."
-  too_many_recipients: "Pas plus de %max% destinataires à la fois."
-  unknown_recipient: "Cette personne n'existe pas : « %username% »."
+  too_many_recipients: "Pas plus de {max} destinataires à la fois."
+  unknown_recipient: "Cette personne n'existe pas : « {username} »."
   self: "T'écrire à toi-même ? Prends un carnet !"
-  inbox_full: "La boîte de réception de %username% est pleine."
-  flood: "Tu dois attendre 2 minutes entre chaque envoi de message (encore %seconds% s)."
+  inbox_full: "La boîte de réception de {username} est pleine."
+  flood: "Tu dois attendre 2 minutes entre chaque envoi de message (encore {seconds} s)."
   not_yours: "Cette conversation n'est pas la tienne."
   nobody_left: "Plus personne à qui répondre dans cette conversation."
 
 flash:
-  sent: "Message bien envoyé à %username%."
+  sent: "Message bien envoyé à {username}."
   replied: "Réponse envoyée."
   archived: "Conversation archivée."
   unarchived: "Conversation remise dans ta boîte."

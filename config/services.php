@@ -27,6 +27,8 @@ return function (ContainerConfigurator $configurator) {
             $src . '/DependencyInjection/',
             $src . '/Entity/',
             $src . '/MailboxBundle.php',
+            // Exceptions are values, not services.
+            $src . '/Service/*Exception.php',
         ]);
 
     $services->load('Base\\Mailbox\\Controller\\', $src . '/Controller/')
