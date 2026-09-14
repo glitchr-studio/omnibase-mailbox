@@ -1,0 +1,26 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+# base-bundle's member-facing controllers: the mailbox links members to
+# user_profile (Client/) and the layout to security_login. Not the whole
+# Controller/ directory: its Backoffice/ CRUDs need base-bundle-admin, which
+# the mailbox does not.
+base_client:
+    resource: "@BaseBundle/Controller/Client"
+    type: attribute
+    prefix: /
+
+base_security:
+    resource: "@BaseBundle/Controller/SecurityController.php"
+    type: attribute
+    prefix: /
+
+# The mailbox itself. MailboxBundle::getPath() returns the package root
+# (modern layout, code under src/), hence the src/ in the resource path.
+mailbox_controller:
+    resource: "@MailboxBundle/src/Controller/Client"
+    type: attribute
+    prefix: /

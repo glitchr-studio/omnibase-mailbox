@@ -41,6 +41,27 @@ mailbox:
 
 Then a migration, and `bin/console assets:install` for `public/css/mailbox.css`.
 
+## Try it in one command
+
+A self-contained demo (a bare Symfony skeleton, base-bundle, this checkout and SQLite) ships in the root [Dockerfile](Dockerfile). Its first page seeds two members and a conversation between them, signs you in as one of them, and walks the rules (what is refused and why); *switch member* in the top bar swaps you to the other side of the conversation:
+
+```bash
+docker build -t base-bundle-mailbox-demo .
+docker run --rm -p 8000:8000 base-bundle-mailbox-demo
+# → http://localhost:8000/            the tour
+# → http://localhost:8000/messagerie  the mailbox
+```
+
+The demo app under [example/app/](example/app/) doubles as the minimal host: the `bundles.php`, `routes.yaml`, `doctrine.yaml`, `security.yaml` and `mailbox.yaml` an application needs, and a `layout1.html.twig` showing the only contract the mailbox's templates have with their host — `content`, `aside`, `title`, `stylesheets` and `javascripts` blocks.
+
+## Development
+
+```bash
+make tests                               # phpunit, standalone or from inside a host app
+docker compose run --rm test             # the same, in a clean php:8.4 container
+docker compose run --rm test composer test-coverage   # → var/coverage/index.html
+```
+
 ## Routes
 
 | name | path |

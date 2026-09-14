@@ -2,13 +2,44 @@
     "name": "glitchr/base-bundle-mailbox",
     "type": "symfony-bundle",
     "description": "Private messaging for base-bundle: member-to-member conversations with an inbox, archives, read state, quotas and flood control",
-    "keywords": ["symfony", "mailbox", "messaging", "private messages"],
+    "keywords": [
+        "symfony",
+        "mailbox",
+        "messaging",
+        "private messages"
+    ],
     "homepage": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/base/extension/mailbox",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
             "name": "Marco Meyer",
             "email": "marco.meyer@glitchr.io"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/agnostic/backup-manager"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/base/component"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/base/plugin"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/doctrine-dc2type"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/well-known"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gitlab.glitchr.dev/public-repository/symfony/bundle/ux/google-api"
         }
     ],
     "autoload": {
@@ -37,11 +68,20 @@
         "symfony/twig-bundle": "^6.0|^7.0|^8.0",
         "symfony/var-dumper": "^6.0|^7.0|^8.0"
     },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "XDEBUG_MODE=coverage phpunit --coverage-html var/coverage --coverage-text"
+    },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
         "sort-packages": true,
-        "minimum-stability": "dev"
+        "minimum-stability": "dev",
+        "allow-plugins": {
+            "glitchr/base-plugin": true,
+            "glitchr/doctrine-dc2type": true,
+            "php-http/discovery": true
+        }
     }
 }
