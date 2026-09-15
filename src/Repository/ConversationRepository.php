@@ -35,7 +35,7 @@ class ConversationRepository extends ServiceEntityRepository
             ->leftJoin('c.lastSender', 'ls')->addSelect('ls')
             ->andWhere('me.deletedAt IS NULL')
             ->setParameter('user', $user)
-            ->orderBy('c.lastMessageAt', 'DESC');
+            ->orderBy('c.lastMessageAt', \SortDirection::Descending);
 
         switch ($box) {
             case self::BOX_ARCHIVE:

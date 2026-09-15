@@ -33,7 +33,7 @@ class Conversation
     protected Collection $participants;
 
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'conversation', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    #[ORM\OrderBy(['createdAt' => 'ASC', 'id' => 'ASC'])]
+    #[ORM\OrderBy(['createdAt' => \SortDirection::Ascending, 'id' => \SortDirection::Ascending])]
     protected Collection $messages;
 
     #[ORM\Column(type: 'datetime')]

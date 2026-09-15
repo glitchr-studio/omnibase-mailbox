@@ -19,7 +19,7 @@ class MessageRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.sender = :sender')->setParameter('sender', $sender)
-            ->orderBy('m.createdAt', 'DESC')->addOrderBy('m.id', 'DESC')
+            ->orderBy('m.createdAt', \SortDirection::Descending)->addOrderBy('m.id', \SortDirection::Descending)
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }
