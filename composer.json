@@ -1,5 +1,5 @@
 {
-    "name": "glitchr/base-bundle-mailbox",
+    "name": "omnibase/mailbox",
     "type": "symfony-bundle",
     "description": "Private messaging for base-bundle: member-to-member conversations with an inbox, archives, read state, quotas and flood control",
     "keywords": [
@@ -60,7 +60,7 @@
         "symfony/form": "^6.0|^7.0|^8.0",
         "symfony/security-bundle": "^6.0|^7.0|^8.0",
         "doctrine/orm": "^2.15|^3.0",
-        "glitchr/base-bundle": "3.0.*-dev"
+        "glitchr/omnibase": "3.0.*-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",

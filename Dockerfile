@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 #
-# Standalone, runnable demo of glitchr/base-bundle-mailbox — a bare Symfony
+# Standalone, runnable demo of omnibase/mailbox — a bare Symfony
 # skeleton with base-bundle and this checkout installed, a SQLite database,
 # a one-page tour that seeds two members and a conversation, and the
 # mailbox itself at /messagerie.
@@ -62,7 +62,7 @@ COPY . /srv/base-bundle-mailbox
 # overlay ships every config file the demo needs; the container is compiled
 # at first run instead.
 RUN composer config repositories.base-bundle-mailbox '{"type": "path", "url": "/srv/base-bundle-mailbox", "options": {"symlink": false}}' \
-    && composer require "glitchr/base-bundle:3.x-dev as 3.0.x-dev" "glitchr/base-bundle-mailbox:*@dev" symfony/translation --no-interaction --no-progress --no-scripts \
+    && composer require "glitchr/omnibase:3.x-dev as 3.0.x-dev" "omnibase/mailbox:*@dev" symfony/translation --no-interaction --no-progress --no-scripts \
     # Recipe leftovers for bundles the demo does not register: the
     # google/recaptcha contrib recipe references a class recaptcha 1.5 no
     # longer ships, and webauthn's expects credential repositories the demo
@@ -72,7 +72,7 @@ RUN composer config repositories.base-bundle-mailbox '{"type": "path", "url": "/
 # base-bundle's OrderedArrayCollection::matching() declares a return type
 # doctrine/collections 3 refuses; applications carry this patch through
 # cweagans/composer-patches, the demo applies it by hand.
-RUN cd vendor/glitchr/base-bundle \
+RUN cd vendor/glitchr/omnibase \
     && git apply -p1 /srv/base-bundle-mailbox/example/patches/glitchr-base-bundle-doctrine-collections-3.patch
 
 # --- demo app overlay: config, one controller, two templates -----------------

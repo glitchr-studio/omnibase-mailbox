@@ -12,7 +12,7 @@ removed once nobody keeps it.
 ## Install
 
 ```bash
-composer require glitchr/base-bundle-mailbox:dev-main
+composer require omnibase/mailbox:dev-main
 ```
 
 ```php
