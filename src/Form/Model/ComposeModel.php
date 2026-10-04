@@ -8,8 +8,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ComposeModel
 {
     /** Comma-separated usernames; the service resolves and checks them. */
-    #[Assert\NotBlank(message: '@mailbox.error.no_recipient')]
+    #[Assert\NotBlank(message: '@mailbox.error.no_recipient', groups: ['usernames'])]
     public ?string $recipients = null;
+
+    /** With mailbox.directory: a choice of the directory, "desk:<name>" or "user:<id>". */
+    #[Assert\NotBlank(message: '@mailbox.error.no_recipient', groups: ['directory'])]
+    public ?string $to = null;
 
     #[Assert\NotBlank(message: '@mailbox.error.empty')]
     #[Assert\Length(max: 55, maxMessage: '@mailbox.error.subject_too_long')]

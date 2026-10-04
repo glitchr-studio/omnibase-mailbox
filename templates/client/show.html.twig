@@ -1,28 +1,32 @@
 {% extends '@Mailbox/client/layout.html.twig' %}
 
-{% set box = me.archived ? 'archive' : 'inbox' %}
-{% block mailbox_title %}{{ conversation.subject }}{% endblock %}
+{% set box = me ? (me.archived ? 'archive' : 'inbox') : 'desk' %}
+{% block mailbox_title %}{{ conversation.subject|mailbox_plain }}{% endblock %}
 
 {% block mailbox_body %}
     {% set user = app.user %}
     {% set others = conversation.getOthers(user) %}
 
-    <article class="mailbox-thread">
+    {# With mailbox.poll: omnibase's Stimulus `poll` asks mailbox_state; on a change mailbox.js loads the new messages. #}
+    <article class="mailbox-thread"{% if poll|default(0) > 0 %} data-controller="poll" data-poll-url-value="{{ path('mailbox_state', {id: conversation.id}) }}" data-poll-interval-value="{{ poll * 1000 }}" data-poll-key-value="latest" data-poll-since-value="{{ conversation.messageCount }}" data-mailbox-live{% endif %}>
         <header class="mailbox-thread-head">
             <div class="mailbox-thread-text">
-                <h2>{% if me.starred %}<i class="fa-solid fa-star mailbox-star"></i> {% endif %}{{ conversation.subject }}</h2>
+                <h2>{% if me and me.starred %}<i class="fa-solid fa-star mailbox-star"></i> {% endif %}{{ conversation.subject|mailbox_plain }}</h2>
                 <p class="mailbox-thread-with">
                     {{ '@mailbox.show.with'|trans }}
-                    {% for other in others %}{% if not loop.first %}, {% endif %}{% include '@Mailbox/client/_member.html.twig' with {user: other} %}{% else %}<span class="mailbox-member-gone">{{ '@mailbox.member.nobody'|trans }}</span>{% endfor %}
+                    {% if desk|default(null) %}<span class="mailbox-desk"><i class="fa-solid fa-bell-concierge"></i> {{ desk_label }}</span>{% if others|length %}, {% endif %}{% endif %}
+                    {% for other in others %}{% if not loop.first %}, {% endif %}{% include '@Mailbox/client/_member.html.twig' with {user: other} %}{% else %}{% if not desk|default(null) %}<span class="mailbox-member-gone">{{ '@mailbox.member.nobody'|trans }}</span>{% endif %}{% endfor %}
                     · {{ '@mailbox.list.messages'|trans({'%count%': conversation.messageCount}) }}
                 </p>
             </div>
+            {% if me %}
             <form method="post" class="mailbox-thread-actions" data-mailbox-actions>
                 <input type="hidden" name="_token" value="{{ csrf_token('mailbox_' ~ conversation.id) }}">
                 <button class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: me.starred ? 'unstar' : 'star'}) }}"><i class="fa-{{ me.starred ? 'solid' : 'regular' }} fa-star"></i> {{ (me.starred ? '@mailbox.action.unstar' : '@mailbox.action.star')|trans }}</button>
                 <button class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: me.archived ? 'unarchive' : 'archive'}) }}"><i class="fa-solid fa-box-archive"></i> {{ (me.archived ? '@mailbox.action.unarchive' : '@mailbox.action.archive')|trans }}</button>
                 <button class="mailbox-btn mailbox-btn-danger mailbox-btn-sm" formaction="{{ path('mailbox_action', {id: conversation.id, action: 'delete'}) }}" data-confirm="{{ '@mailbox.action.delete_confirm'|trans }}"><i class="fa-solid fa-trash"></i> {{ '@mailbox.action.delete'|trans }}</button>
             </form>
+            {% endif %}
         </header>
 
         <ol class="mailbox-messages">
@@ -38,20 +42,22 @@
                             <time datetime="{{ message.createdAt|date('c') }}">{{ message.createdAt|datetime('d MMMM yyyy, HH:mm') }}</time>
                         </header>
                         <div class="mailbox-message-text">{{ message.content|mailbox_text }}</div>
+                        {% for attachment in (attachments|default({}))[message.id]|default([]) %}
+                        <p class="mailbox-attachment">
+                            {% if attachment.image %}<a href="{{ path('office_document_download', {id: attachment.documentId}) }}" data-transparent="false"><img src="{{ path('office_document_download', {id: attachment.documentId, inline: 1}) }}" alt="{{ '@mailbox.attachment.image'|trans }}" loading="lazy"></a>
+                            {% else %}<a class="mailbox-btn mailbox-btn-ghost mailbox-btn-sm" href="{{ path('office_document_download', {id: attachment.documentId}) }}" data-transparent="false" download><i class="fa-solid fa-paperclip"></i> {{ '@mailbox.attachment.file'|trans }}</a>{% endif %}
+                        </p>
+                        {% endfor %}
                     </div>
                 </li>
             {% endfor %}
         </ol>
 
-        {% if others|length %}
+        {% if can_reply is defined ? can_reply : others|length %}
         <section class="mailbox-reply" id="reply">
             <h3><i class="fa-solid fa-reply"></i> {{ '@mailbox.reply.title'|trans }}</h3>
-            {{ form_start(form, {attr: {class: 'mailbox-form'}}) }}
-                {{ form_row(form.content) }}
-                <div class="mailbox-form-actions">
-                    <button type="submit" class="mailbox-btn mailbox-btn-primary"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.reply.send'|trans }}</button>
-                </div>
-            {{ form_end(form) }}
+            {# Its own partial: a site that words or lays the reply form out differently overrides this file alone. #}
+            {% include '@Mailbox/client/_reply.html.twig' %}
         </section>
         {% else %}
             <p class="mailbox-empty">{{ '@mailbox.show.nobody_left'|trans }}</p>

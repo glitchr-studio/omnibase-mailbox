@@ -1,0 +1,8 @@
+{# The reply form of a conversation (show.html.twig). #}
+{{ form_start(form, {attr: {class: 'mailbox-form'}}) }}
+    {{ form_row(form.content) }}
+    {% if form.attachment is defined %}{{ form_row(form.attachment) }}{% endif %}
+    <div class="mailbox-form-actions">
+        <button type="submit" class="mailbox-btn mailbox-btn-primary"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.reply.send'|trans }}</button>
+    </div>
+{{ form_end(form) }}

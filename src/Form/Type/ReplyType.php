@@ -3,6 +3,7 @@
 namespace Base\Mailbox\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +14,8 @@ class ReplyType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['translation_domain' => 'mailbox']);
+        $resolver->setDefaults(['translation_domain' => 'mailbox', 'attachments' => false]);
+        $resolver->setAllowedTypes('attachments', 'bool');
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -23,5 +25,15 @@ class ReplyType extends AbstractType
             'attr' => ['rows' => 6, 'placeholder' => 'form.reply_placeholder'],
             'constraints' => [new Assert\NotBlank(message: '@mailbox.error.empty')],
         ]);
+        // With mailbox.attachments: one file with the reply, kept in omnibase/office's vault.
+        if ($options['attachments']) {
+            $builder->add('attachment', FileType::class, [
+                'label' => 'form.attachment',
+                'help' => 'form.attachment_help',
+                'required' => false,
+                'mapped' => false,
+                'attr' => ['accept' => 'application/pdf,image/*'],
+            ]);
+        }
     }
 }

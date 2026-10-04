@@ -6,10 +6,10 @@
 {% block mailbox_body %}
     <section class="mailbox-compose">
         <h2><i class="fa-solid fa-pen"></i> {{ '@mailbox.compose.title'|trans }}</h2>
-        <p class="mailbox-compose-hint">{{ '@mailbox.compose.hint'|trans }}</p>
+        <p class="mailbox-compose-hint">{{ (form.to is defined ? '@mailbox.compose.hint_directory' : '@mailbox.compose.hint')|trans }}</p>
 
         {{ form_start(form, {attr: {class: 'mailbox-form'}}) }}
-            {{ form_row(form.recipients) }}
+            {{ form_row(form.to is defined ? form.to : form.recipients) }}
             {{ form_row(form.subject) }}
             {{ form_row(form.content) }}
             <div class="mailbox-form-actions">

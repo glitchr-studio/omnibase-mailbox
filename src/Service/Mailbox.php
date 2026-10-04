@@ -3,13 +3,18 @@
 namespace Base\Mailbox\Service;
 
 use App\Entity\User;
+use Base\Mailbox\Crypto\MessageCipher;
+use Base\Mailbox\Desk\Desks;
 use Base\Mailbox\Entity\Conversation;
 use Base\Mailbox\Entity\Message;
+use Base\Mailbox\Event\MessageSentEvent;
+use Base\Mailbox\Extension\Entity\DeskConversation;
 use Base\Mailbox\Repository\ConversationRepository;
 use Base\Mailbox\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * The rules of the mailbox, in one place: who may write to whom, how often,
@@ -32,6 +37,10 @@ class Mailbox
         #[Autowire('%mailbox.subject_max_length%')] private readonly int $subjectMaxLength = 55,
         #[Autowire('%mailbox.content_max_length%')] private readonly int $contentMaxLength = 10000,
         #[Autowire('%mailbox.max_recipients%')] private readonly int $maxRecipients = 5,
+        // Added last, all optional: what a site turns on in its configuration (desks, encryption, notices).
+        private readonly ?MessageCipher $cipher = null,
+        private readonly ?Desks $desks = null,
+        private readonly ?EventDispatcherInterface $dispatcher = null,
     ) {
         $this->conversations = $entityManager->getRepository(Conversation::class);
         $this->messages = $entityManager->getRepository(Message::class);
@@ -63,17 +72,95 @@ class Mailbox
             $this->assertHasRoom($recipient);
         }
 
-        $conversation = new Conversation($subject);
+        return $this->open($sender, $recipients, $subject, $content);
+    }
+
+    /**
+     * Start a conversation with accounts already known (a directory's
+     * choice) rather than typed usernames.
+     *
+     * @param User[] $recipients
+     * @throws MailboxException
+     */
+    public function composeTo(User $sender, array $recipients, string $subject, string $content): Conversation
+    {
+        [$subject, $content] = $this->assertFirstMessage($subject, $content);
+        $recipients = array_values(array_filter($recipients, static fn (User $user) => $user !== $sender));
+        if ([] === $recipients) {
+            throw new MailboxException('error.no_recipient');
+        }
+        $this->assertNotFlooding($sender);
+        foreach ($recipients as $recipient) {
+            $this->assertHasRoom($recipient);
+        }
+
+        return $this->open($sender, $recipients, $subject, $content);
+    }
+
+    /**
+     * Write to a desk (mailbox.desks): the author is the conversation's only
+     * participant until someone of the desk answers.
+     *
+     * @throws MailboxException
+     */
+    public function composeToDesk(User $sender, string $desk, string $subject, string $content): Conversation
+    {
+        if (null === $this->desks || !$this->desks->has($desk)) {
+            throw new MailboxException('error.unknown_desk');
+        }
+        [$subject, $content] = $this->assertFirstMessage($subject, $content);
+        $this->assertNotFlooding($sender);
+
+        return $this->open($sender, [], $subject, $content, $desk);
+    }
+
+    /** @param User[] $recipients */
+    private function open(User $sender, array $recipients, string $subject, string $content, ?string $desk = null): Conversation
+    {
+        // Encrypted before anything is stored: with mailbox.encrypt on and no key, this throws and nothing is.
+        $conversation = new Conversation($this->seal($subject));
         $conversation->addParticipant($sender);
         foreach ($recipients as $recipient) {
             $conversation->addParticipant($recipient);
         }
-        $conversation->addMessage(new Message($sender, $content));
+        $message = new Message($sender, $this->seal($content));
+        $conversation->addMessage($message);
 
         $this->entityManager->persist($conversation);
+        if (null !== $desk) {
+            $this->entityManager->persist(new DeskConversation($conversation, $desk, $sender));
+        }
         $this->entityManager->flush();
+        $this->dispatcher?->dispatch(new MessageSentEvent($conversation, $message, $sender, $desk, true));
 
         return $conversation;
+    }
+
+    /** @return array{0: string, 1: string} @throws MailboxException */
+    private function assertFirstMessage(string $subject, string $content): array
+    {
+        $subject = trim($subject);
+        $content = trim($content);
+        if ('' === $subject || '' === $content) {
+            throw new MailboxException('error.empty');
+        }
+        if (mb_strlen($subject) > $this->subjectMaxLength) {
+            throw new MailboxException('error.subject_too_long', ['%max%' => $this->subjectMaxLength]);
+        }
+        $this->assertContent($content);
+
+        return [$subject, $content];
+    }
+
+    private function seal(string $text): string
+    {
+        return null !== $this->cipher ? $this->cipher->encrypt($text) : $text;
+    }
+
+    /** A subject or a message as written: decrypted when it was stored encrypted; null when it cannot be read. */
+    public function reveal(?string $stored): ?string
+    {
+        return null !== $this->cipher ? $this->cipher->decrypt($stored) : $stored;
     }
 
     /** @throws MailboxException */
@@ -85,15 +172,20 @@ class Mailbox
         }
         $this->assertContent($content);
 
+        // A conversation written to a desk: its staff join it by answering, and its author may write again before anyone has.
+        $desk = $this->desks?->of($conversation);
+        if (null !== $desk && !$conversation->hasParticipant($sender) && $this->desks->staffs($sender, $conversation)) {
+            $this->entityManager->persist($conversation->addParticipant($sender));
+        }
         if (!$conversation->hasParticipant($sender) || $conversation->getParticipant($sender)?->isDeleted()) {
             throw new MailboxException('error.not_yours');
         }
-        if ([] === $conversation->getOthers($sender)) {
+        if (null === $desk && [] === $conversation->getOthers($sender)) {
             throw new MailboxException('error.nobody_left');
         }
         $this->assertNotFlooding($sender);
 
-        $message = new Message($sender, $content);
+        $message = new Message($sender, $this->seal($content));
         $conversation->addMessage($message);
 
         // A reply resurfaces the conversation for everyone who had deleted
@@ -107,6 +199,7 @@ class Mailbox
 
         $this->entityManager->persist($message);
         $this->entityManager->flush();
+        $this->dispatcher?->dispatch(new MessageSentEvent($conversation, $message, $sender, $desk?->getDesk()));
 
         return $message;
     }

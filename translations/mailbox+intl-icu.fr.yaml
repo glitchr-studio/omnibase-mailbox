@@ -4,6 +4,7 @@ box:
   inbox: "Boîte de réception"
   sent: "Envoyés"
   archive: "Archives"
+  desk: "Guichet"
 
 list:
   count: "{count, plural, =0 {aucune conversation} one {# conversation} other {# conversations}}"
@@ -18,6 +19,7 @@ list:
   empty_inbox: "Tu n'as aucun message dans ta boîte de réception."
   empty_sent: "Tu n'as encore rien envoyé."
   empty_archive: "Rien d'archivé."
+  empty_desk: "Rien n'a été écrit au guichet."
 
 show:
   with: "avec"
@@ -26,6 +28,7 @@ show:
 compose:
   title: "Nouveau message"
   hint: "Écris à un ou plusieurs membres (sépare les pseudos par des virgules). Un message par deux minutes, et une boîte pleine ne reçoit plus rien."
+  hint_directory: "Choisis à qui tu écris."
   send: "Envoyer"
 
 reply:
@@ -57,6 +60,9 @@ form:
   to: "À :"
   to_help: "Le pseudo exact du tiz, tel qu'il apparaît dans l'annuaire."
   to_placeholder: "Nom du tiz à qui tu veux envoyer"
+  to_choose: "Choisir…"
+  attachment: "Joindre un fichier"
+  attachment_help: "Un PDF ou une image ; conservé chiffré."
   subject: "Sujet :"
   subject_placeholder: "Titre de ton message"
   message: "Message :"
@@ -80,6 +86,9 @@ error:
   flood: "Tu dois attendre 2 minutes entre chaque envoi de message (encore {seconds} s)."
   not_yours: "Cette conversation n'est pas la tienne."
   nobody_left: "Plus personne à qui répondre dans cette conversation."
+  unknown_desk: "Ce guichet n'existe pas."
+  no_key: "L'envoi de messages est momentanément impossible. Rien n'a été enregistré."
+  attachment: "Le fichier n'a pas pu être joint ({reason})."
 
 flash:
   sent: "Message bien envoyé à {username}."
@@ -89,3 +98,15 @@ flash:
   deleted: "Conversation supprimée."
   batch_archived: "{count, plural, =0 {Rien à archiver.} one {# conversation archivée.} other {# conversations archivées.}}"
   batch_deleted: "{count, plural, =0 {Rien à supprimer.} one {# conversation supprimée.} other {# conversations supprimées.}}"
+
+attachment:
+  image: "Image jointe"
+  file: "Pièce jointe"
+
+email:
+  notify:
+    subject: "Vous avez un nouveau message"
+    hello: "Bonjour,"
+    body: "Un nouveau message vous attend dans votre messagerie."
+    button: "Lire le message"
+    why: "Par confidentialité, ni le message ni son sujet ne figurent dans cet e-mail. Connectez-vous pour le lire."

@@ -57,5 +57,10 @@
             "glitchr/doctrine-dc2type": true,
             "php-http/discovery": true
         }
+    },
+    "suggest": {
+        "ext-sodium": "Subjects and messages stored encrypted (mailbox.encrypt)",
+        "omnibase/office": "Attachments kept in the office's encrypted document vault (mailbox.attachments)",
+        "symfony/mailer": "The notice that a message awaits (mailbox.notify)"
     }
 }

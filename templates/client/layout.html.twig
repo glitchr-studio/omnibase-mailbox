@@ -24,6 +24,12 @@
         </a>
         <a class="mailbox-tab{{ current == 'sent' ? ' is-active' }}" href="{{ path('mailbox_index', {box: 'sent'}) }}"><i class="fa-solid fa-paper-plane"></i> {{ '@mailbox.box.sent'|trans }}</a>
         <a class="mailbox-tab{{ current == 'archive' ? ' is-active' }}" href="{{ path('mailbox_index', {box: 'archive'}) }}"><i class="fa-solid fa-box-archive"></i> {{ '@mailbox.box.archive'|trans }}</a>
+        {# The desks this member answers at (mailbox.desks): their conversations, how many wait. #}
+        {% if mailbox_desks() %}
+        <a class="mailbox-tab{{ current == 'desk' ? ' is-active' }}" href="{{ path('mailbox_index', {box: 'desk'}) }}"><i class="fa-solid fa-bell-concierge"></i> {{ mailbox_desks()|join(', ') }}
+            {% set waiting = mailbox_desk_waiting() %}{% if waiting > 0 %}<span class="mailbox-badge">{{ waiting }}</span>{% endif %}
+        </a>
+        {% endif %}
         <a class="mailbox-tab mailbox-tab-new{{ current == 'compose' ? ' is-active' }}" href="{{ path('mailbox_compose') }}"><i class="fa-solid fa-pen"></i> {{ '@mailbox.compose.title'|trans }}</a>
     </nav>
 

@@ -4,7 +4,8 @@
 // (vendor/omnibase/mailbox): whichever autoloader exists is used,
 // and the test namespace is registered by hand because a host's autoloader
 // never reads a dependency's autoload-dev.
-$candidates = [__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php'];
+// (a path repository's symlink resolves outside the application: its autoloader is then the working directory's)
+$candidates = [__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php', getcwd().'/vendor/autoload.php'];
 foreach ($candidates as $candidate) {
     if (is_file($candidate)) {
         $loader = require $candidate;

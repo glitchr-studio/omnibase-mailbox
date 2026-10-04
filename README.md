@@ -81,3 +81,11 @@ docker compose run --rm test composer test-coverage   # → var/coverage/index.h
 ## Override points
 
 `templates/bundles/MailboxBundle/client/_banner.html.twig` and `_avatar.html.twig`.
+
+## Desks, notices, attachments, live refresh, encryption
+
+Off by default, each behind its option: desks a member writes to without knowing a username
+(`mailbox.desks`), a choice of recipients (`directory`), an e-mail that says a message awaits and
+nothing of it (`notify`), a file with a reply kept in omnibase/office's encrypted vault
+(`attachments`), the open conversation refreshed (`poll`), subjects and messages stored encrypted,
+failing closed without a key (`encrypt`). See [docs/desks-attachments-encryption.md](docs/desks-attachments-encryption.md).

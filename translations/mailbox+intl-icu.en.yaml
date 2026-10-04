@@ -4,6 +4,7 @@ box:
   inbox: "Inbox"
   sent: "Sent"
   archive: "Archive"
+  desk: "Desk"
 
 list:
   count: "{count, plural, =0 {no conversation} one {# conversation} other {# conversations}}"
@@ -18,6 +19,7 @@ list:
   empty_inbox: "Your inbox is empty."
   empty_sent: "You have not sent anything yet."
   empty_archive: "Nothing archived."
+  empty_desk: "Nothing has been written to the desk."
 
 show:
   with: "with"
@@ -26,6 +28,7 @@ show:
 compose:
   title: "New message"
   hint: "Write to one or more members (separate usernames with commas). One message every two minutes, and a full box receives nothing."
+  hint_directory: "Choose who you are writing to."
   send: "Send"
 
 reply:
@@ -57,6 +60,9 @@ form:
   to: "To:"
   to_help: "The member's exact username, as shown in the directory."
   to_placeholder: "Who are you writing to?"
+  to_choose: "Choose…"
+  attachment: "Attach a file"
+  attachment_help: "A PDF or a picture; kept encrypted."
   subject: "Subject:"
   subject_placeholder: "Title of your message"
   message: "Message:"
@@ -80,6 +86,9 @@ error:
   flood: "Wait two minutes between two messages ({seconds} s left)."
   not_yours: "This conversation is not yours."
   nobody_left: "Nobody left to answer in this conversation."
+  unknown_desk: "This desk does not exist."
+  no_key: "Messages cannot be sent for the moment. Nothing was stored."
+  attachment: "The file could not be attached ({reason})."
 
 flash:
   sent: "Message sent to {username}."
@@ -89,3 +98,15 @@ flash:
   deleted: "Conversation deleted."
   batch_archived: "{count, plural, =0 {Nothing to archive.} one {# conversation archived.} other {# conversations archived.}}"
   batch_deleted: "{count, plural, =0 {Nothing to delete.} one {# conversation deleted.} other {# conversations deleted.}}"
+
+attachment:
+  image: "Attached picture"
+  file: "Attachment"
+
+email:
+  notify:
+    subject: "You have a new message"
+    hello: "Hello,"
+    body: "A new message awaits you in your mailbox."
+    button: "Read the message"
+    why: "For confidentiality, neither the message nor its subject is in this e-mail. Sign in to read it."
