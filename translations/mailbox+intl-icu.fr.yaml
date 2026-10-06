@@ -17,7 +17,9 @@ list:
   messages: "{count, plural, one {# message} other {# messages}}"
   select_all: "Tout sélectionner"
   empty_inbox: "Tu n'as aucun message dans ta boîte de réception."
+  empty_inbox._polite: "Vous n'avez aucun message dans votre boîte de réception."
   empty_sent: "Tu n'as encore rien envoyé."
+  empty_sent._polite: "Vous n'avez encore rien envoyé."
   empty_archive: "Rien d'archivé."
   empty_desk: "Rien n'a été écrit au guichet."
 
@@ -28,7 +30,9 @@ show:
 compose:
   title: "Nouveau message"
   hint: "Écris à un ou plusieurs membres (sépare les pseudos par des virgules). Un message par deux minutes, et une boîte pleine ne reçoit plus rien."
+  hint._polite: "Écrivez à un ou plusieurs membres (séparez les pseudos par des virgules). Un message par deux minutes, et une boîte pleine ne reçoit plus rien."
   hint_directory: "Choisis à qui tu écris."
+  hint_directory._polite: "Choisissez à qui vous écrivez."
   send: "Envoyer"
 
 reply:
@@ -43,6 +47,7 @@ action:
   starred: "Marqué"
   delete: "Supprimer"
   delete_confirm: "Supprimer ? La conversation disparaît de ta boîte, pas de celle des autres."
+  delete_confirm._polite: "Supprimer ? La conversation disparaît de votre boîte, pas de celle des autres."
 
 aside:
   write: "Écrire"
@@ -50,7 +55,9 @@ aside:
   help: "Bon à savoir"
   help_private: "Un message est privé : seuls les participants le lisent."
   help_reply: "Réponds dans la conversation, elle reste groupée."
+  help_reply._polite: "Répondez dans la conversation, elle reste groupée."
   help_archive: "Archive ce que tu veux garder sans encombrer ta boîte."
+  help_archive._polite: "Archivez ce que vous voulez garder sans encombrer votre boîte."
 
 member:
   deleted: "Membre disparu"
@@ -60,31 +67,44 @@ form:
   to: "À :"
   to_help: "Le pseudo exact du tiz, tel qu'il apparaît dans l'annuaire."
   to_placeholder: "Nom du tiz à qui tu veux envoyer"
+  to_placeholder._polite: "Nom du tiz à qui vous voulez envoyer"
   to_choose: "Choisir…"
   attachment: "Joindre un fichier"
   attachment_help: "Un PDF ou une image ; conservé chiffré."
   subject: "Sujet :"
   subject_placeholder: "Titre de ton message"
+  subject_placeholder._polite: "Titre de votre message"
   message: "Message :"
   message_placeholder: "Ton message…"
+  message_placeholder._polite: "Votre message…"
   reply: "Ta réponse"
+  reply._polite: "Votre réponse"
   reply_placeholder: "Ta réponse…"
+  reply_placeholder._polite: "Votre réponse…"
   cancel: "Annuler"
 
 message:
   blank: "Tu ne peux pas envoyer de message vide."
+  blank._polite: "Vous ne pouvez pas envoyer de message vide."
 
 error:
   empty: "Tu ne peux pas envoyer de message/sujet vide."
+  empty._polite: "Vous ne pouvez pas envoyer de message/sujet vide."
   subject_too_long: "Ton sujet doit contenir au maximum {max} caractères."
+  subject_too_long._polite: "Votre sujet doit contenir au maximum {max} caractères."
   content_too_long: "Ton message dépasse {max} caractères."
+  content_too_long._polite: "Votre message dépasse {max} caractères."
   no_recipient: "À qui écris-tu ? Indique au moins un pseudo."
+  no_recipient._polite: "À qui écrivez-vous ? Indiquez au moins un pseudo."
   too_many_recipients: "Pas plus de {max} destinataires à la fois."
   unknown_recipient: "Cette personne n'existe pas : « {username} »."
   self: "T'écrire à toi-même ? Prends un carnet !"
+  self._polite: "Vous écrire à vous-même ? Prenez un carnet !"
   inbox_full: "La boîte de réception de {username} est pleine."
   flood: "Tu dois attendre 2 minutes entre chaque envoi de message (encore {seconds} s)."
+  flood._polite: "Vous devez attendre 2 minutes entre chaque envoi de message (encore {seconds} s)."
   not_yours: "Cette conversation n'est pas la tienne."
+  not_yours._polite: "Cette conversation n'est pas la vôtre."
   nobody_left: "Plus personne à qui répondre dans cette conversation."
   unknown_desk: "Ce guichet n'existe pas."
   no_key: "L'envoi de messages est momentanément impossible. Rien n'a été enregistré."
@@ -95,6 +115,7 @@ flash:
   replied: "Réponse envoyée."
   archived: "Conversation archivée."
   unarchived: "Conversation remise dans ta boîte."
+  unarchived._polite: "Conversation remise dans votre boîte."
   deleted: "Conversation supprimée."
   batch_archived: "{count, plural, =0 {Rien à archiver.} one {# conversation archivée.} other {# conversations archivées.}}"
   batch_deleted: "{count, plural, =0 {Rien à supprimer.} one {# conversation supprimée.} other {# conversations supprimées.}}"
