@@ -89,3 +89,7 @@ Off by default, each behind its option: desks a member writes to without knowing
 nothing of it (`notify`), a file with a reply kept in omnibase/office's encrypted vault
 (`attachments`), the open conversation refreshed (`poll`), subjects and messages stored encrypted,
 failing closed without a key (`encrypt`). See [docs/desks-attachments-encryption.md](docs/desks-attachments-encryption.md).
+
+## License
+
+MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
