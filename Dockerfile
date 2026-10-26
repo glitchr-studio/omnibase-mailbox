@@ -62,7 +62,7 @@ COPY . /srv/base-bundle-mailbox
 # overlay ships every config file the demo needs; the container is compiled
 # at first run instead.
 RUN composer config repositories.base-bundle-mailbox '{"type": "path", "url": "/srv/base-bundle-mailbox", "options": {"symlink": false}}' \
-    && composer require "omniscient/omnibase:3.x-dev as 3.0.x-dev" "omnibase/mailbox:*@dev" symfony/translation --no-interaction --no-progress --no-scripts \
+    && composer require "omnisense/omnibase:3.x-dev as 3.0.x-dev" "omnibase/mailbox:*@dev" symfony/translation --no-interaction --no-progress --no-scripts \
     # Recipe leftovers for bundles the demo does not register: the
     # google/recaptcha contrib recipe references a class recaptcha 1.5 no
     # longer ships, and webauthn's expects credential repositories the demo
@@ -72,7 +72,7 @@ RUN composer config repositories.base-bundle-mailbox '{"type": "path", "url": "/
 # base-bundle's OrderedArrayCollection::matching() declares a return type
 # doctrine/collections 3 refuses; applications carry this patch through
 # cweagans/composer-patches, the demo applies it by hand.
-RUN cd vendor/omniscient/omnibase \
+RUN cd vendor/omnisense/omnibase \
     && git apply -p1 /srv/base-bundle-mailbox/example/patches/glitchr-base-bundle-doctrine-collections-3.patch
 
 # --- demo app overlay: config, one controller, two templates -----------------

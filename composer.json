@@ -8,7 +8,7 @@
         "messaging",
         "private messages"
     ],
-    "homepage": "https://github.com/glitchr-studio/omnibase-mailbox",
+    "homepage": "https://github.com/glitchr-omnisense/omnibase-mailbox",
     "license": "MIT",
     "authors": [
         {
@@ -35,7 +35,7 @@
         "symfony/security-bundle": "^6.0|^7.0|^8.0",
         "doctrine/orm": "^2.15|^3.0",
         "omnibridge/symfony": "1.x-dev",
-        "omniscient/omnibase": "3.0.*-dev || 4.0.*-dev"
+        "omnisense/omnibase": "3.0.*-dev || 4.0.*-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
