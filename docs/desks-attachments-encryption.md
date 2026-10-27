@@ -1,6 +1,6 @@
 ---
 title: Desks, notices, attachments, encryption
-order: 2
+order: 32
 ---
 
 # Desks, notices, attachments, live refresh, encryption
