@@ -1,6 +1,6 @@
 # Mailbox
 
-Private messaging for [base-bundle](https://gitlab.glitchr.dev/public-repository/symfony/bundle/base/component):
+Private messaging for [omnisense/omnibase](https://github.com/glitchr-omnisense/omnibase):
 member-to-member conversations with an inbox, sent and archive boxes, per-member
 read/star/delete state, a box quota and flood control.
 
@@ -43,11 +43,11 @@ Then a migration, and `bin/console assets:install` for `public/css/mailbox.css`.
 
 ## Try it in one command
 
-A self-contained demo (a bare Symfony skeleton, base-bundle, this checkout and SQLite) ships in the root [Dockerfile](Dockerfile). Its first page seeds two members and a conversation between them, signs you in as one of them, and walks the rules (what is refused and why); *switch member* in the top bar swaps you to the other side of the conversation:
+A self-contained demo (a bare Symfony skeleton, omnisense/omnibase, this checkout and SQLite) ships in the root [Dockerfile](Dockerfile). Its first page seeds two members and a conversation between them, signs you in as one of them, and walks the rules (what is refused and why); *switch member* in the top bar swaps you to the other side of the conversation:
 
 ```bash
-docker build -t base-bundle-mailbox-demo .
-docker run --rm -p 8000:8000 base-bundle-mailbox-demo
+docker build -t omnibase-mailbox-demo .
+docker run --rm -p 8000:8000 omnibase-mailbox-demo
 # → http://localhost:8000/            the tour
 # → http://localhost:8000/messagerie  the mailbox
 ```

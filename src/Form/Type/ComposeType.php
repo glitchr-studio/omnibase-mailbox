@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class ComposeType extends AbstractType
 {
@@ -46,6 +47,7 @@ class ComposeType extends AbstractType
             ->add('subject', TextType::class, [
                 'label' => 'form.subject',
                 'attr' => ['maxlength' => $options['subject_max_length'], 'placeholder' => 'form.subject_placeholder'],
+                'constraints' => [new Length(max: $options['subject_max_length'], maxMessage: '@mailbox.error.subject_too_long')],
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'form.message',

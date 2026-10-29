@@ -77,10 +77,8 @@ mailbox:
 | `poll` | int, 0 or more | `0` |
 | `key` | base64 of 32 bytes, or null | `null` |
 
-> [!WARNING]
-> Known defect: the compose form's model (`ComposeModel::$subject`) is validated at 55 characters
-> whatever `subject_max_length` says, where the option is meant to set the limit: raised above 55,
-> longer subjects are still refused by the form.
+`subject_max_length` is the longest subject everywhere: the service, the field's `maxlength` and
+the compose form's constraint (`ComposeType`'s `subject_max_length` option).
 
 `MailboxExtension::prepend()` maps the extension entities (`Base\Mailbox\Extension\Entity`, alias
 `MailboxExtension`) into Doctrine only when `desks` or `attachments` is configured.

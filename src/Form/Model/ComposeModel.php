@@ -15,8 +15,8 @@ class ComposeModel
     #[Assert\NotBlank(message: '@mailbox.error.no_recipient', groups: ['directory'])]
     public ?string $to = null;
 
+    /** The longest: the form's subject_max_length option (mailbox.subject_max_length), ComposeType's constraint. */
     #[Assert\NotBlank(message: '@mailbox.error.empty')]
-    #[Assert\Length(max: 55, maxMessage: '@mailbox.error.subject_too_long')]
     public ?string $subject = null;
 
     #[Assert\NotBlank(message: '@mailbox.error.empty')]
